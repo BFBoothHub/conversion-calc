@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Conversion Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .calculator-header {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .calculator-header span {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .calculator-header h1 {
+            color: #00c4a7;
+            font-size: 48px;
+            font-weight: 900;
+            margin: 10px 0;
+        }
+
+        .calculator-header p {
+            color: #666;
+            font-size: 18px;
+        }
+
+        .calculator-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            background-color: #00c4a7;
+        }
+
+        .calculator-container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .section {
+            flex: 1;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            min-width: 300px;
+        }
+
+        .section h2 {
+            font-size: 24px;
+            font-weight: 900;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .calc-row {
+            margin-bottom: 25px;
+        }
+
+        .calc-row label {
+            display: block;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+            accent-color: #00c4a7;
+        }
+
+        .slider-value {
+            font-weight: 600;
+            color: #333;
+            display: block;
+            margin: 5px 0;
+        }
+
+        .result {
+            margin-top: 30px;
+        }
+
+        .result p {
+            font-size: 16px;
+            color: #AC05F2;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+
+        .result p span {
+            color: #00c4a7;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .calculator-container {
+                flex-direction: column;
+            }
+        }
+
+        .conversion-rate-display {
+            padding: 12px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .conversion-rate-note {
+            color: #666;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .popup-content h2 {
+            color: #00c4a7;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .popup-content p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 18px;
+        }
+
+        .popup-content button {
+            background-color: #00c4a7;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .popup-content button:hover {
+            background-color: #00b398;
+        }
+
+        .title-with-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 10px 0;
+        }
+
+        .calculator-icon {
+            width: 48px;
+            height: 48px;
+        }
+
+        @media (max-width: 768px) {
+            .calculator-icon {
+                width: 36px;
+                height: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-header">
+        <span>Calculator</span>
+        <div class="title-with-icon">
+            <h1>Check your Numbers</h1>
+            <svg class="calculator-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="3" width="16" height="18" rx="2" stroke="#00c4a7" stroke-width="2"/>
+                <rect x="7" y="6" width="10" height="3" rx="0.5" fill="#00c4a7"/>
+                <circle cx="8" cy="12" r="1" fill="#00c4a7"/>
+                <circle cx="12" cy="12" r="1" fill="#00c4a7"/>
+                <circle cx="16" cy="12" r="1" fill="#00c4a7"/>
+                <circle cx="8" cy="15" r="1" fill="#00c4a7"/>
+                <circle cx="12" cy="15" r="1" fill="#00c4a7"/>
+                <circle cx="16" cy="15" r="1" fill="#00c4a7"/>
+                <circle cx="8" cy="18" r="1" fill="#00c4a7"/>
+                <circle cx="12" cy="18" r="1" fill="#00c4a7"/>
+                <circle cx="16" cy="18" r="1" fill="#00c4a7"/>
+            </svg>
+        </div>
+        <p>Confirm your sales conversion goal</p>
+    </div>
+
+    <div class="calculator-wrapper">
+        <div class="calculator-container">
+            <!-- Current Website Section -->
+            <div class="section">
+                <h2>Current Website</h2>
+                <div class="calc-row">
+                    <label for="traffic">What is your average monthly traffic?</label>
+                    <input type="number" id="traffic" value="5000">
+                </div>
+                <div class="calc-row">
+                    <label for="new-sales">New Customer Sales per month</label>
+                    <input type="number" id="new-sales" value="50">
+                </div>
+                <div class="calc-row">
+                    <label>Current conversion rate</label>
+                    <div class="conversion-rate-display">
+                        <span id="conversion-rate-value">1%</span>
+                        <span class="conversion-rate-note">(Automatically calculated from traffic and sales)</span>
+                    </div>
+                </div>
+                <div class="calc-row">
+                    <label for="lifetime-value">What is your average customer lifetime value?</label>
+                    <input type="number" id="lifetime-value" value="200">
+                </div>
+                <div class="calc-row">
+                    <label for="client-months">Average number of months as a client</label>
+                    <input type="range" id="client-months" min="1" max="120" step="1" value="6">
+                    <span class="slider-value" id="client-months-value">6 Months</span>
+                </div>
+                <div class="result">
+                    <p>Current customers converted per month: <span id="current-customers">50</span> per calendar month</p>
+                    <p>Current Conversion Rate Value: £<span id="current-revenue">0</span> per calendar month</p>
+                </div>
+            </div>
+
+            <!-- Future Website Section -->
+            <div class="section">
+                <h2>Future Website</h2>
+                <div class="calc-row">
+                    <label for="increase-rate">Increase conversion above current rate</label>
+                    <input type="range" id="increase-rate" min="0" max="6" step="0.1" value="0">
+                    <span class="slider-value" id="increase-rate-value">0%</span>
+                </div>
+                <div class="result">
+                    <p>Conversion rate total after optimisation: <span id="optimized-rate">1.00%</span></p>
+                    <p>Customers converted per month after optimisation: <span id="optimized-customers">50</span> per calendar month</p>
+                    <p>Monthly revenue increase after optimisation: £<span id="revenue-increase">0</span> per calendar month</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this right after the calculator-wrapper div -->
+    <div id="popup" class="popup-overlay">
+        <div class="popup-content">
+            <h2>You convert how much?!</h2>
+            <p>You don't need us! Chase more leads :)</p>
+            <button onclick="closePopup()">Got it!</button>
+        </div>
+    </div>
+
+    <script>
+        // Get all the necessary DOM elements
+        const trafficInput = document.getElementById('traffic');
+        const newSalesInput = document.getElementById('new-sales');
+        const conversionRateValue = document.getElementById('conversion-rate-value');
+        const lifetimeValueInput = document.getElementById('lifetime-value');
+        const clientMonthsSlider = document.getElementById('client-months');
+        const clientMonthsValue = document.getElementById('client-months-value');
+        const increaseRateSlider = document.getElementById('increase-rate');
+        const increaseRateValue = document.getElementById('increase-rate-value');
+        const optimizedRateOutput = document.getElementById('optimized-rate');
+        const optimizedCustomersOutput = document.getElementById('optimized-customers');
+        const revenueIncreaseOutput = document.getElementById('revenue-increase');
+        const currentCustomersOutput = document.getElementById('current-customers');
+        const currentRevenueOutput = document.getElementById('current-revenue');
+
+        // Update event listeners
+        trafficInput.addEventListener('input', updateCalculations);
+        newSalesInput.addEventListener('input', updateCalculations);
+        lifetimeValueInput.addEventListener('input', updateCalculations);
+        
+        clientMonthsSlider.oninput = () => {
+            clientMonthsValue.textContent = `${clientMonthsSlider.value} Months`;
+            updateCalculations();
+        };
+        
+        increaseRateSlider.oninput = () => {
+            increaseRateValue.textContent = `${increaseRateSlider.value}%`;
+            updateCalculations();
+        };
+
+        function showPopup() {
+            document.getElementById('popup').style.display = 'flex';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        function updateCalculations() {
+            const traffic = parseFloat(trafficInput.value) || 0;
+            const newSales = parseFloat(newSalesInput.value) || 0;
+            const lifetimeValue = parseFloat(lifetimeValueInput.value) || 0;
+            const clientMonths = parseFloat(clientMonthsSlider.value) || 1;
+            const increaseRate = parseFloat(increaseRateSlider.value) || 0;
+
+            // Calculate conversion rate from traffic and sales
+            const conversionRate = traffic > 0 ? (newSales / traffic) * 100 : 0;
+            conversionRateValue.textContent = `${conversionRate.toFixed(2)}%`;
+
+            // Check if conversion rate is 3% or higher
+            if (conversionRate >= 3) {
+                showPopup();
+            }
+
+            // Format numbers function
+            const formatNumber = (num) => new Intl.NumberFormat('en-GB').format(num);
+
+            // Calculate current conversion results
+            currentCustomersOutput.textContent = formatNumber(newSales);
+            const currentRevenue = (newSales * lifetimeValue / clientMonths);
+            currentRevenueOutput.textContent = formatNumber(currentRevenue.toFixed(2));
+
+            // Calculate optimized conversion rate
+            const optimizedRate = conversionRate + increaseRate;
+            optimizedRateOutput.textContent = `${optimizedRate.toFixed(2)}%`;
+
+            // Calculate customers converted per month after optimisation
+            const optimizedCustomers = Math.round((optimizedRate / 100) * traffic);
+            optimizedCustomersOutput.textContent = formatNumber(optimizedCustomers);
+
+            // Calculate monthly revenue increase after optimisation
+            const revenueIncrease = (optimizedCustomers * lifetimeValue / clientMonths);
+            revenueIncreaseOutput.textContent = formatNumber(revenueIncrease.toFixed(2));
+        }
+
+        // Initial calculation
+        updateCalculations();
+    </script>
+</body>
+</html> 
