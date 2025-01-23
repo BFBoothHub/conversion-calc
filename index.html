@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales Conversion Calculator</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/calculator.css">
     <style>
         * {
             margin: 0;
@@ -292,84 +293,6 @@
         </div>
     </div>
 
-    <script>
-        // Get all the necessary DOM elements
-        const trafficInput = document.getElementById('traffic');
-        const newSalesInput = document.getElementById('new-sales');
-        const conversionRateValue = document.getElementById('conversion-rate-value');
-        const lifetimeValueInput = document.getElementById('lifetime-value');
-        const clientMonthsSlider = document.getElementById('client-months');
-        const clientMonthsValue = document.getElementById('client-months-value');
-        const increaseRateSlider = document.getElementById('increase-rate');
-        const increaseRateValue = document.getElementById('increase-rate-value');
-        const optimizedRateOutput = document.getElementById('optimized-rate');
-        const optimizedCustomersOutput = document.getElementById('optimized-customers');
-        const revenueIncreaseOutput = document.getElementById('revenue-increase');
-        const currentCustomersOutput = document.getElementById('current-customers');
-        const currentRevenueOutput = document.getElementById('current-revenue');
-
-        // Update event listeners
-        trafficInput.addEventListener('input', updateCalculations);
-        newSalesInput.addEventListener('input', updateCalculations);
-        lifetimeValueInput.addEventListener('input', updateCalculations);
-        
-        clientMonthsSlider.oninput = () => {
-            clientMonthsValue.textContent = `${clientMonthsSlider.value} Months`;
-            updateCalculations();
-        };
-        
-        increaseRateSlider.oninput = () => {
-            increaseRateValue.textContent = `${increaseRateSlider.value}%`;
-            updateCalculations();
-        };
-
-        function showPopup() {
-            document.getElementById('popup').style.display = 'flex';
-        }
-
-        function closePopup() {
-            document.getElementById('popup').style.display = 'none';
-        }
-
-        function updateCalculations() {
-            const traffic = parseFloat(trafficInput.value) || 0;
-            const newSales = parseFloat(newSalesInput.value) || 0;
-            const lifetimeValue = parseFloat(lifetimeValueInput.value) || 0;
-            const clientMonths = parseFloat(clientMonthsSlider.value) || 1;
-            const increaseRate = parseFloat(increaseRateSlider.value) || 0;
-
-            // Calculate conversion rate from traffic and sales
-            const conversionRate = traffic > 0 ? (newSales / traffic) * 100 : 0;
-            conversionRateValue.textContent = `${conversionRate.toFixed(2)}%`;
-
-            // Check if conversion rate is 3% or higher
-            if (conversionRate >= 3) {
-                showPopup();
-            }
-
-            // Format numbers function
-            const formatNumber = (num) => new Intl.NumberFormat('en-GB').format(num);
-
-            // Calculate current conversion results
-            currentCustomersOutput.textContent = formatNumber(newSales);
-            const currentRevenue = (newSales * lifetimeValue / clientMonths);
-            currentRevenueOutput.textContent = formatNumber(currentRevenue.toFixed(2));
-
-            // Calculate optimized conversion rate
-            const optimizedRate = conversionRate + increaseRate;
-            optimizedRateOutput.textContent = `${optimizedRate.toFixed(2)}%`;
-
-            // Calculate customers converted per month after optimisation
-            const optimizedCustomers = Math.round((optimizedRate / 100) * traffic);
-            optimizedCustomersOutput.textContent = formatNumber(optimizedCustomers);
-
-            // Calculate monthly revenue increase after optimisation
-            const revenueIncrease = (optimizedCustomers * lifetimeValue / clientMonths);
-            revenueIncreaseOutput.textContent = formatNumber(revenueIncrease.toFixed(2));
-        }
-
-        // Initial calculation
-        updateCalculations();
-    </script>
+    <script src="js/calculator.js"></script>
 </body>
 </html> 
