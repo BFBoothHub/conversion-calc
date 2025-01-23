@@ -47,7 +47,7 @@
             background-color: #00c4a7;
         }
 
-        .calculator-container {
+        .container calculator-container {
             display: flex;
             gap: 20px;
             max-width: 1200px;
@@ -120,7 +120,7 @@
         }
 
         @media (max-width: 768px) {
-            .calculator-container {
+            .container calculator-container {
                 flex-direction: column;
             }
         }
@@ -233,33 +233,84 @@
     </div>
 
     <div class="calculator-wrapper">
-        <div class="calculator-container">
+        <div class="container calculator-container">
             <!-- Current Website Section -->
             <div class="section">
                 <h2>Current Website</h2>
                 <div class="calc-row">
                     <label for="traffic">What is your average monthly traffic?</label>
-                    <input type="number" id="traffic" value="5000">
+                    <div class="slider-container">
+                        <div class="current-value">5,000</div>
+                        <div class="slider-track">
+                            <input type="range" 
+                                   class="range-slider"
+                                   id="traffic"
+                                   min="0" 
+                                   max="100000" 
+                                   step="500" 
+                                   value="5000">
+                        </div>
+                    </div>
                 </div>
                 <div class="calc-row">
                     <label for="new-sales">New Customer Sales per month</label>
-                    <input type="number" id="new-sales" value="50">
+                    <div class="slider-container">
+                        <div class="current-value" id="new-sales-value">50</div>
+                        <div class="slider-track">
+                            <button class="slider-arrow left"></button>
+                            <input type="range" 
+                                   id="new-sales" 
+                                   min="1" 
+                                   max="5000" 
+                                   step="1" 
+                                   value="50"
+                                   class="range-slider">
+                            <button class="slider-arrow right"></button>
+                        </div>
+                    </div>
                 </div>
                 <div class="calc-row">
                     <label>Current conversion rate</label>
                     <div class="conversion-rate-display">
-                        <span id="conversion-rate-value">1%</span>
-                        <span class="conversion-rate-note">(Automatically calculated from traffic and sales)</span>
+                        <div class="current-value" id="conversion-rate-value">1%</div>
+                        <div class="conversion-rate-box">
+                            <div class="conversion-rate-fill"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="calc-row">
                     <label for="lifetime-value">What is your average customer lifetime value?</label>
-                    <input type="number" id="lifetime-value" value="200">
+                    <div class="slider-container">
+                        <div class="current-value" id="lifetime-value-value">200</div>
+                        <div class="slider-track">
+                            <button class="slider-arrow left"></button>
+                            <input type="range" 
+                                   id="lifetime-value" 
+                                   min="10" 
+                                   max="1000000" 
+                                   step="100" 
+                                   value="200"
+                                   class="range-slider">
+                        </div>
+                        <button class="slider-arrow right"></button>
+                    </div>
                 </div>
                 <div class="calc-row">
                     <label for="client-months">Average number of months as a client</label>
-                    <input type="range" id="client-months" min="1" max="120" step="1" value="6">
-                    <span class="slider-value" id="client-months-value">6 Months</span>
+                    <div class="slider-container">
+                        <div class="current-value" id="client-months-value">6 Months</div>
+                        <div class="slider-track">
+                            <button class="slider-arrow left"></button>
+                            <input type="range" 
+                                   id="client-months" 
+                                   min="1" 
+                                   max="120" 
+                                   step="1" 
+                                   value="6"
+                                   class="range-slider">
+                        </div>
+                        <button class="slider-arrow right"></button>
+                    </div>
                 </div>
                 <div class="result">
                     <p>Current customers converted per month: <span id="current-customers">50</span> per calendar month</p>
@@ -272,8 +323,20 @@
                 <h2>Future Website</h2>
                 <div class="calc-row">
                     <label for="increase-rate">Increase conversion above current rate</label>
-                    <input type="range" id="increase-rate" min="0" max="6" step="0.1" value="0">
-                    <span class="slider-value" id="increase-rate-value">0%</span>
+                    <div class="slider-container increase-rate-container">
+                        <div class="current-value" id="increase-rate-value">0%</div>
+                        <div class="slider-track">
+                            <button class="slider-arrow left"></button>
+                            <input type="range" 
+                                   id="increase-rate" 
+                                   min="0" 
+                                   max="6" 
+                                   step="0.1" 
+                                   value="0"
+                                   class="range-slider">
+                        </div>
+                        <button class="slider-arrow right"></button>
+                    </div>
                 </div>
                 <div class="result">
                     <p>Conversion rate total after optimisation: <span id="optimized-rate">1.00%</span></p>
@@ -289,6 +352,7 @@
         <div class="popup-content">
             <h2>You convert how much?!</h2>
             <p>You don't need us! Chase more leads :)</p>
+            <p class="popup-note">*above 3% sales conversion from a website is great</p>
             <button onclick="closePopup()">Got it!</button>
         </div>
     </div>
