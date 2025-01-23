@@ -47,9 +47,9 @@ function updateCalculations() {
     document.querySelector(`[for="increase-rate"] + .slider-container .current-value`)
         .textContent = `${increaseRate.toFixed(1)}%`;
 
-    // Calculate current values
+    // Calculate current website values
     const currentConversionRate = traffic > 0 ? (newSales / traffic) * 100 : 0;
-    const monthlyRevenue = (newSales * lifetimeValue) / clientMonths;
+    const monthlyRevenue = newSales * lifetimeValue * clientMonths;
 
     // Update current website stats
     document.getElementById('current-customers').textContent = 
@@ -59,11 +59,11 @@ function updateCalculations() {
     document.getElementById('conversion-rate-value').textContent = 
         `${currentConversionRate.toFixed(2)}%`;
 
-    // Calculate and update future website stats
-    const optimizedConversionRate = currentConversionRate * (1 + (increaseRate / 100));
-    const optimizedCustomers = Math.round((traffic * optimizedConversionRate) / 100);
-    const optimizedMonthlyRevenue = (optimizedCustomers * lifetimeValue) / clientMonths;
-    const monthlyRevenueIncrease = optimizedMonthlyRevenue - monthlyRevenue;
+    // Calculate future website values
+    const optimizedConversionRate = currentConversionRate + increaseRate;
+    const optimizedCustomers = Math.round((optimizedConversionRate / 100) * traffic);
+    const optimizedRevenue = optimizedCustomers * lifetimeValue * clientMonths;
+    const monthlyRevenueIncrease = Math.max(0, optimizedRevenue - monthlyRevenue);
 
     // Update future website stats
     document.getElementById('optimized-rate').textContent = 
@@ -71,7 +71,7 @@ function updateCalculations() {
     document.getElementById('optimized-customers').textContent = 
         new Intl.NumberFormat('en-GB').format(optimizedCustomers);
     document.getElementById('revenue-increase').textContent = 
-        new Intl.NumberFormat('en-GB').format(Math.max(0, monthlyRevenueIncrease));
+        new Intl.NumberFormat('en-GB').format(monthlyRevenueIncrease);
 
     // Check for popup condition
     if (currentConversionRate >= 4 && !window.popupShown) {
@@ -80,12 +80,22 @@ function updateCalculations() {
     }
 }
 
+function updateSliderFill(slider) {
+    const percentage = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+    slider.style.setProperty('--fill-percentage', `${percentage}%`);
+}
+
 // Initialize sliders
 document.addEventListener('DOMContentLoaded', () => {
     // Add input event listeners to all sliders
     const sliders = document.querySelectorAll('.range-slider');
     sliders.forEach(slider => {
-        slider.addEventListener('input', updateCalculations);
+        slider.addEventListener('input', (e) => {
+            updateCalculations();
+            updateSliderFill(e.target);
+        });
+        // Initialize fill
+        updateSliderFill(slider);
     });
 
     // Initial calculation

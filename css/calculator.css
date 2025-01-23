@@ -230,29 +230,51 @@ input[type="range"] {
     margin: 0;
 }
 
-/* Double-ended arrow knob design */
+/* Track styling */
+.range-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(to right, var(--primary) var(--fill-percentage, 0%), #2c3e50 var(--fill-percentage, 0%));
+    border-radius: 4px;
+    transition: background 0.3s ease-in-out;
+}
+
+/* Diamond-shaped knob */
 .range-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 40px;
+    width: 28px;
     height: 28px;
     background: var(--accent);
     cursor: pointer;
     position: relative;
-    clip-path: polygon(0% 50%, 20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%);
-    border: none;
+    margin-top: -10px; /* Center the thumb on track */
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
-    margin-top: 14px;
+    transition: transform 0.2s ease;
+}
+
+/* Hover effect */
+.range-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
 }
 
 /* Firefox support */
+.range-slider::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(to right, var(--primary) var(--fill-percentage, 0%), #2c3e50 var(--fill-percentage, 0%));
+    border-radius: 4px;
+}
+
 .range-slider::-moz-range-thumb {
-    width: 40px;
+    width: 28px;
     height: 28px;
     background: var(--accent);
     cursor: pointer;
     border: none;
-    clip-path: polygon(0% 50%, 20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease;
 }
 
 /* Future Website slider - teal knob */
